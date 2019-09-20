@@ -3,6 +3,7 @@ package com.test.denis.repositoriesinfo.spec
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
+import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.helpers.SpecHelper
 import com.test.denis.repositoriesinfo.pageObjects.RepoListPageObject
 import com.test.denis.repositoriesinfo.ui.RepositoryListActivity
@@ -103,7 +104,26 @@ class RepoListViewTest {
         assertEquals(0, repoCount)
     }
 
-    // Test of Repository cell render properties
+    // UI Tests of Repositories list - AC3 - If repo contains a wiki displays different cell color
+    @Test
+    fun itemWithWikiWhiteBackgroundTest(){
+        fail("Not implemented test")
+        reposListPageObject.loadTetrisRepos()
+        val response = specHelper.makeAPICall("tetris", 1, 10)
+        assert(response != null) { print("Error: Api call returned no response") }
+        assert(response!!.total > 0)  { print("Error: Api call returned empty response")}
+        reposListPageObject.checkTextOfRecyclerChildItemAtPosition(0, R.id.ownerName, "chvis")
+        assert(response.items[0].hasWiki) { print("Error: Expected first element contain wiki")}
+        // TODO: Add mechanism to retrieve background color of RecyclerView child at given position (Complex)
+    }
+
+    @Test
+    fun itemWithoutWikiDarkBackgroundTest(){
+        fail("Not implemented test")
+        // TODO: Add mechanism to retrieve background color of RecyclerView child at given position (Complex)
+    }
+
+    // Test of Repository cell render properties - AC4
     @Test
     fun tetrisCompleteCellDataDisplayTest() {
         reposListPageObject.typeTextToSearchBar("tetris")
