@@ -129,9 +129,9 @@ class RepoListViewTest {
         reposListPageObject.typeTextToSearchBar("tetris")
         specHelper.tapSearch()
         specHelper.waitUntilGoneProgressBar(5000)
-        assertTrue(reposListPageObject.checkRepositoryOwnerItem("chvin"))
-        assertTrue(reposListPageObject.checkRepositorySizeItem("4319"))
-        assertTrue(reposListPageObject.checkRepositoryNameItem("react-tetris"))
+        reposListPageObject.checkTextOfRecyclerChildItemAtPosition(0, R.id.ownerName,"chvin")
+        reposListPageObject.checkTextOfRecyclerChildItemAtPosition(0, R.id.repoSize, "4319")
+        reposListPageObject.checkTextOfRecyclerChildItemAtPosition(0, R.id.repoName, "react-tetris")
     }
 
 
