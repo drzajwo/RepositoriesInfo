@@ -14,12 +14,14 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import android.widget.TextView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.matcher.BoundedMatcher
+import com.test.denis.repositoriesinfo.helpers.SpecHelper
 import com.test.denis.repositoriesinfo.ui.RepoItemViewHolder
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
 
 class RepoListPageObject(private val activityRule: ActivityTestRule<RepositoryListActivity>) {
+    val specHelper = SpecHelper()
 
     fun checkIfSearchBarIsDisplayed(): Boolean{
         try {
@@ -37,6 +39,12 @@ class RepoListPageObject(private val activityRule: ActivityTestRule<RepositoryLi
             return false
         }
         return true
+    }
+
+    fun loadTetrisRepos(){
+        typeTextToSearchBar("tetris")
+        specHelper.tapSearch()
+        specHelper.waitUntilGoneProgressBar(5000)
     }
 
     fun typeTextToSearchBar(text: String){

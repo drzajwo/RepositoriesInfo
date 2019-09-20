@@ -1,12 +1,8 @@
 package com.test.denis.repositoriesinfo.spec
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.helpers.SpecHelper
 import com.test.denis.repositoriesinfo.pageObjects.RepoListPageObject
 import com.test.denis.repositoriesinfo.ui.RepositoryListActivity
@@ -18,7 +14,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class SearchBarTest {
+class RepoListViewTest {
 
     @get:Rule
     val activityRule = ActivityTestRule(RepositoryListActivity::class.java)
@@ -65,7 +61,7 @@ class SearchBarTest {
         assertTrue(reposListPageObject.checkRepositoryOwnerItem("chvin"))
         assertTrue(reposListPageObject.checkRepositorySizeItem("1248"))
         reposListPageObject.typeTextToSearchBar("Appium")
-        onView(withId(R.id.inputSearch)).perform(pressImeActionButton())
+        specHelper.tapSearch()
         specHelper.waitUntilGoneProgressBar(5000)
         // Ensure list is visible
         assertTrue(reposListPageObject.checkIfReposListIsDisplayed())
@@ -79,8 +75,10 @@ class SearchBarTest {
     @Test
     fun repoListElementsCountScrollAndAgainTest(){
         // Wait for progress bar to disappear
+        reposListPageObject.loadTetrisRepos()
         specHelper.waitUntilGoneProgressBar(5000)
         // Ensure list is visible
+        specHelper.hideKeybard()
         assertTrue(reposListPageObject.checkIfReposListIsDisplayed())
         var repoCount = reposListPageObject.getReposListCount()
         // Check if 10 repos are displayed
@@ -88,6 +86,7 @@ class SearchBarTest {
         // Scroll to 9th element and wait for content to load
         reposListPageObject.swipeToNElement(9)
         specHelper.waitUntilGoneProgressBar(5000)
+        reposListPageObject.swipeToNElement(11)
         repoCount = reposListPageObject.getReposListCount()
         // Check if 20 repos are displayed
         assertEquals(20, repoCount)
@@ -97,7 +96,7 @@ class SearchBarTest {
     fun failingSearchTest(){
         specHelper.waitUntilGoneProgressBar(5000)
         reposListPageObject.typeTextToSearchBar("drdrdrdrdrdrdrdrdr")
-        onView(withId(R.id.inputSearch)).perform(pressImeActionButton())
+        specHelper.tapSearch()
         specHelper.waitUntilGoneProgressBar(5000)
         val repoCount = reposListPageObject.getReposListCount()
         // Check if 0 repos are displayed
@@ -108,7 +107,7 @@ class SearchBarTest {
     @Test
     fun tetrisCompleteCellDataDisplayTest() {
         reposListPageObject.typeTextToSearchBar("tetris")
-        onView(withId(R.id.inputSearch)).perform(pressImeActionButton())
+        specHelper.tapSearch()
         specHelper.waitUntilGoneProgressBar(5000)
         assertTrue(reposListPageObject.checkRepositoryOwnerItem("chvin"))
         assertTrue(reposListPageObject.checkRepositorySizeItem("4319"))
